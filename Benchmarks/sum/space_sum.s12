@@ -1,0 +1,34 @@
+// Sum of n numbers — Simple-12 (space-optimized), it starts with the instructions, assuming PC starts at 0, then I state where the data is stored
+// Sean Brennan, ECE 432, AI Disclaimer: Chat GPT was used to assist with the following code, it did not write the whole thing, it was utilized
+
+LOAD  0x82          // ACC ← n (list length)
+JZ    0x10          // if n = 0 → done
+STORE 0x83          // counter ← n
+LOAD  0x85          // ACC ← 0
+STORE 0x84          // SUM ← 0
+LOAD  0x83          // loop: ACC ← counter
+JZ    0x10          // if counter = 0 → done
+SUB   0x80          // ACC − 1
+STORE 0x83          // counter ← counter −1
+LOADI 0x86          // ACC ← M(pointer) (current list value)
+ADD   0x84          // ACC + SUM
+STORE 0x84          // SUM ← ACC
+LOAD  0x86          // ACC ← pointer
+ADD   0x80          // ACC +1 → next address
+STORE 0x86          // save pointer
+JMP   0x05          // repeat loop
+HALT                // finished
+
+
+// data
+// Address : Value   Comment
+0x80: 001     // constant 1
+0x82: 004     // n (example: 4 elements)
+0x83: 000     // counter
+0x84: 000     // SUM result
+0x85: 000     // const 0
+0x86: 0x87    // pointer → start of list
+0x87: 003     // list[0]
+0x88: 10      // list[1]
+0x89: 002     // list[2]
+0x8A: 005     // list[3]

@@ -1,0 +1,24 @@
+LOAD 10
+STORE 11
+SUB 11
+LOADI A
+STOREI B
+SUB B
+HALT
+
+
+
+JMP 16
+JMP 17
+
+
+
+
+JMP 2A
+JMP 1
+
+
+
+
+JMP 2A
+JMP  0

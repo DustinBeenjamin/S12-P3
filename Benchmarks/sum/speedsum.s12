@@ -1,0 +1,26 @@
+// This is a simple sum program. It will add all numbers in the continous list
+// starting at 0x20. The output will overwrite the first input value. It will
+// also be stored at 0x20. This program is optimized for reducing instruction
+// count.
+//
+// Author: Alex Smith, CS 441
+
+// code
+LOAD  0x21 // load second number
+JZ    8    // if empty, jmp to halt
+ADD   0x20 // add the first number
+STORE 0x20 // store in the first address
+LOAD  0    // load the first instruction
+ADD   0x1a // point at next number
+STORE 0    // store instruction
+JMP   0    // go to it
+HALT
+
+// internal data
+0x1a: 1    // one constant
+
+// user data
+0x20: 10   // first input/output value
+0x21: 5
+0x22: 3
+0x23: 4

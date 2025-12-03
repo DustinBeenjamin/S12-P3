@@ -1,0 +1,86 @@
+//        Goal: Multiply an array of N integers.
+//       Input: An array of 8 bit integers and N.
+//      Output: The product of all integers in the array.
+//     Example: {2, 3, 4} -> 2 * 3 * 4 = 24 (N = 3)
+//     Authors: Matt Budig, Ben Dustin, Devin Deal, Sabastian Leper
+//   Course(s): CS41-001 / ECE432-001/ CSE 432-001??? 
+//
+// Explanation: This benchmark intends to be time efficient. It uses the 'peasant multiplication' technique.
+//              To achieve a single multiplication, loop 8 times (once for each bit of the operands). The 
+//              loop should start with a MASK of 1. Mask the first operand. If the result is not 0, add the second
+// 		operand to a running sum of the loop. If not, do not change the sum. At the end of each iteration, 
+//		double the mask and the second operand by adding them to themselves. This will cause the mask's single //		bit to shift left. Finally, the sum is the product of the two operands               
+//              To handle N operands, use the technique above N - 1 times, saving the sum of each operation
+//              as a running product, and using this product as the first operand in the next operation.
+// 
+//       Usage: 
+//	        ->The accumulator should start with the number N (the number of operands).
+//              ->The operands should have continuous addresses, starting from address 0x2C.
+//              ->The last available address for operands is 0xF6
+//              ->The address space 0x2C:0xF6 (inclusive) has 203 spaces.
+//	        ->Therefore, only 203 input operands can fit in memory	
+//              ->After running the program, the total product will be stored in address 0xF8
+//              ->Works 8 bit signed and 8 bit unsigned operands. However, uses is responsible to make sure an //		  overflow doesnt occur. Overflows will invalidate results.
+
+//PROGRAM INSTRUCTIONS
+0x00  SUB    0xF7   //Accumulator is now N - 1
+0x01  JN     0x2B   //If N - 1 is negative, then N must be 0 at most (Jump ot halt)
+0x02  STORE  0xFE   //Save N - 1
+0x03  LOAD   0x2C   //Fetch the first number
+0x04  STORE  0xF8   //Save it as the running product
+0x05  LOAD   0xFE   //Load N - 1
+0x06  JZ     0x2B   //If N - 1 = 0, there is only 1 element. Jump to halt.
+0x07  STORE  0xFC   //Save the N - 1 as main loop counter (i)
+0x08  LOAD   0xFC   //LOAD i
+0x09  JZ     0x2B   //Check if the loop is done
+0x0A  SUB    0xF7   //Subtract 1 from i
+0x0B  STORE  0xFC   //Update i
+0x0C  LOAD   0x2D   //Grab the next operand  
+0x0D  STORE  0xFA   //Store the operand   <---------------------------------------------MAIN LOOP DYNAMIC INSTRUCTION
+0x0E  LOAD   0xF7   //Start the bit mask
+0x0F  STORE  0xFB   //Store the mask
+0x10  LOAD   0xF6   //Start a running sum for inner loop
+0x11  STORE  0xF9   //Store the running sum for inner loop
+0x12  LOAD   0xF5   //Start inner loop counter j
+0x13  STORE  0xFD   //Store inner loop counter j
+0x14  LOAD   0xFD   //Load inner loop counter j
+0x15  JZ     0x25   //Check if loop needs to end
+0x16  SUB    0xF7   //If not, decrement j
+0x17  STORE  0xFD   //Store j
+0x18  LOAD   0xF8   //Load the running product
+0x19  AND    0xFB   //Apply mask to evaluate target bit
+0x1A  JZ     0x1E   //Do not update running sum if zero
+0x1B  LOAD   0xFA   //Load the operand
+0x1C  ADD    0xF9   //Add the inner loop running sum
+0x1D  STORE  0xF9   //Save the running sum
+0x1E  LOAD   0xFB   //Load the mask
+0x1F  ADD    0xFB   //Double the mask
+0x20  STORE  0xFB   //Store the mask
+0x21  LOAD   0xFA   //Load the second operand
+0x22  ADD    0xFA   //Double the second operand
+0x23  STORE  0xFA   //Save the second operand
+0x24  J      0x14   //Attempt inner loop repeat
+0x25  LOAD   0xF9   //Load the running sum
+0x26  STORE  0xF8   //Save it as the new running product
+0x27  LOAD   0x0C   //Grab instruction that fetches next operand
+0x28  ADD    0xF7   //Increment it
+0x29  STORE  0x0C   //Save it
+0x2A  J      0x08   //Attempt repeat of outer loop on next operand
+0x2B  HALT   0x2B   //End program
+// PROGRAM INPUTS
+//.................
+//.................
+//.................
+//.................
+0xF7  JMP    0x01
+0xF8  JMP    0x00
+0xF9  JMP    0x00
+0xFA  JMP    0x00
+0xFB  JMP    0x00
+0xFC  JMP    0x00
+0xFD  JMP    0x00
+0xFE  JMP    0x00
+0XFF  JMP    0x00
+
+
+

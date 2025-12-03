@@ -1,0 +1,56 @@
+//N (list size) should be manually set in A (the accumulator)
+//List data starts at 0x21 and ends at 0xF9
+
+// PROGRAM START
+00 JZ    1F    //If N = 0, branch to halt
+01 SUB   FB    //Calculate N - 1
+02 STORE FD    //Store it as i (outer loop counter)
+03 LOAD  21    //Load the first number in sequence
+04 JZ    1F    //If its zero, set product as zero and exit
+05 STORE FF    //Otherwise, store it as the current product
+06 LOAD  FD    //Load the counter i
+07 JZ    1E    //Exit main loop if N - 1 is zero. (N started as 1 and product already contains it)
+08 LOAD  FD    //Load the counter i
+09 JZ    1E    //Exit main loop if it is zero
+0A SUB   FB    //Calculate i - 1
+0B STORE FD    //Store the new i
+0C LOADI FA    //Load the first number to be added iteratively (multiplied by)   <------------OUTER LOOP DYNAMIC (Changes each outer loop)
+0D JZ    1F    //Set product to zero if a single operand is zero
+0E SUB   FB    //Calculate the start j. (second multiplicatoin operand -1)
+0F STORE FC    //Store j
+10 LOAD  FF    //Load the running product
+11 STORE FE    //Save it as the number added iteratively (stats as the existing product each new for loop)
+12 LOAD  FC    //Load j
+13 JZ    1A    //End inner for loop if it is zero
+14 SUB   FB    //Subtract 1
+15 STORE FC    //Store the new j
+16 LOAD  FF    //Load running product
+17 ADD   FE    //Add the product as it was before the for loop started
+18 STORE FF    //Store the modification
+19 JMP   12    //Try to repeat the inner for loop
+1A LOAD  FA    //Load the instruction that fetches next operant
+1B ADD   FB    //Increment it to grad from the next memory location
+1C STORE FA    //Save the change
+1D JMP   08    //Try to repeat outer for loop
+1E HALT  00    //End program
+1F STORE FF    //Save 0 as product. Is called when a zero operand is found while zero is still in the acc
+20 HALT  00    //End program
+// PROGRAM END
+
+//LIST DATA STARTS HERE
+21 JMP   ...
+22 JMP   ...
+23 JMP   ...
+24 JMP   ...
+25 JMP   ...
+26 JMP   ...
+...
+F9 JMP   ...
+
+//WORKING REGISTERS
+FA JMP   22     //Pointer to current element in list
+FB JMP   01     //A constant of 1   
+FC JMP   00     //j, the inner loop counter
+FD JMP   00     //i, the outer loop counter
+FE JMP   00     //The number that gets added each iteration of inner loop. Starts as the product when each loop begins
+FF JMP   00     //The running product (The answer when program completes)
