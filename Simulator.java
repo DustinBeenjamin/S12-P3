@@ -45,8 +45,10 @@ public class Simulator {
     private int misc_ops;               //HALT
 
     public static void main(String[] args) {
-        String[] a = {"./Benchmarks/multiply/speed_multiply.mem"};
+        String[] a = {"./Benchmarks/factorial/speed_factorial.mem"};
         // String[] a = args;
+
+        System.out.println(a[0]);
 
         //Instatiate a simulation object. The rest of the application runs from its constructor
         Simulator sim = new Simulator(a[0]);
@@ -368,7 +370,7 @@ public class Simulator {
         String tempString = "";
         tempString += "\nMETRICS";
         tempString += "\n_________________________";
-        tempString += "\n\t" + String.format("AVERAGED CPI:  %.2f", (0.0 + num_clocks) / instruction_trace.size());
+        tempString += "\n\t" + String.format("AVERAGED CPI:  %.4f", (0.0 + num_clocks) / instruction_trace.size());
         tempString += "\n\tNUM CLOCKS:    " + num_clocks;
         tempString += "\n\tNUM STALLS:    " + num_stalls;
         tempString += "\n\tLOAD OPS:      " + load_ops;
@@ -378,11 +380,11 @@ public class Simulator {
         tempString += "\n\tMISC OPS:      " + misc_ops;
         tempString += "\n";
         tempString += "\n";
-        tempString += "\nINSTRUCTION TRACE" + " (" + instruction_trace.size() + " instructions executed)";
-        tempString += "\n_________________________";
-        for (Stage5State s : instruction_trace) {
-            tempString += "\n\t" + s;
-        }
+        // tempString += "\nINSTRUCTION TRACE" + " (" + instruction_trace.size() + " instructions executed)";
+        // tempString += "\n_________________________";
+        // for (Stage5State s : instruction_trace) {
+        //     tempString += "\n\t" + s;
+        // }
         return tempString;
     }
 }

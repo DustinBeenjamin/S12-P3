@@ -512,20 +512,17 @@ public class Hardware implements Cloneable{
 
         //If the new instruction is store or storei, save the address and append it to the list of busy addresses.
         //Also, start a timer for it to keep track of how long ago it was.
-        if (isSaveOp(raw_instruction_1)) {
+        if ((isSaveOp(raw_instruction_1)) && (pc_enable_1 == 0x01)) {
             int new_instruction_opcode = getOpcodeBinary(raw_instruction_1);
             //If its a store instruction, then the busy address is the lower 8 bits.
             //But, if its a storei instruction, the busy address is the lower 8 bits of memory at the lower 8 bits of the instruction
-            busy_addresses.add(getAddressBinary(raw_instruction_1));
-            busy_addresses.add(getAddressBinary(memory[getAddressBinary(new_instruction_opcode)]));
+            int first_busy_address = getAddressBinary(raw_instruction_1);
+            busy_addresses.add(first_busy_address);
+            int second_busy_address = getAddressBinary(memory[getAddressBinary(first_busy_address)]);
+            busy_addresses.add(second_busy_address);
             address_timers.add(0);
             address_timers.add(0);
         }
-
-        
-
-        
-
 
     }
 
