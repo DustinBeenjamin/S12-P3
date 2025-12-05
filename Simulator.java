@@ -45,8 +45,8 @@ public class Simulator {
     private int misc_ops;               //HALT
 
     public static void main(String[] args) {
-        String[] a = {"./Benchmarks/factorial/speed_factorial.mem"};
-        // String[] a = args;
+        // String[] a = {"./Benchmarks/factorial/speed_factorial.mem"};
+        String[] a = args;
 
         System.out.println(a[0]);
 
@@ -344,11 +344,11 @@ public class Simulator {
 
         System.out.println("\nSTALL SOURCES");
         System.out.println("____________________");
-        System.out.println("\tJMP:      " + j_stalls);
-        System.out.println("\tJN:       " + jn_stalls);
-        System.out.println("\tJZ:       " + jz_stalls);
-        System.out.println("\tSTORE:    " + store_stalls);
-        System.out.println("\tSTOREI:   " + storei_stalls);
+        System.out.println("\tJMP:      " + j_stalls * 4);
+        System.out.println("\tJN:       " + jn_stalls * 4);
+        System.out.println("\tJZ:       " + jz_stalls * 4);
+        System.out.println("\tSTORE:    " + store_stalls * 4);
+        System.out.println("\tSTOREI:   " + storei_stalls * 4);
 
 
 
