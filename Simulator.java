@@ -157,26 +157,26 @@ public class Simulator {
         instruction_trace.add(s);
 
         switch (s.opcode) {
-            case Opcodes.ADD:
-            case Opcodes.SUB:
-            case Opcodes.AND:
-            case Opcodes.OR :
+            case ADD:
+            case SUB:
+            case AND:
+            case OR :
                 alu_ops++;
                 break;
-            case Opcodes.LOAD :
-            case Opcodes.LOADI:
+            case LOAD :
+            case LOADI:
                 load_ops++;
                 break;
-            case Opcodes.STORE:
-            case Opcodes.STOREI:
+            case STORE:
+            case STOREI:
                 store_ops++;
                 break;
-            case Opcodes.JMP:
-            case Opcodes.JN : 
-            case Opcodes.JZ :
+            case JMP:
+            case JN : 
+            case JZ :
                 branch_ops++;
                 break;
-            case Opcodes.HALT:
+            case HALT:
                 misc_ops++;
                 break;
             default:
@@ -321,19 +321,19 @@ public class Simulator {
 
         for (Stage5State s : repeats) {
             switch (s.opcode) {
-                case Opcodes.JMP:
+                case JMP:
                     j_stalls++;
                     break;
-                case Opcodes.JN:
+                case JN:
                     jn_stalls++;
                     break;
-                case Opcodes.JZ:
+                case JZ:
                     jz_stalls++;
                     break;
-                case Opcodes.STORE:
+                case STORE:
                     store_stalls++;
                     break;
-                case Opcodes.STOREI:
+                case STOREI:
                     storei_stalls++;
                     break;
                 default:
